@@ -5,7 +5,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>K-Drama Pookies</title>
     <link href="k-pookie.css" rel="stylesheet">
-    <script src="k-JS.js" defer></script> <!-- Link to the JavaScript file -->
+    <!-- JavaScript moved into the HTML file -->
+    <script defer>
+        document.addEventListener("DOMContentLoaded", function() {
+            const memes = [
+                "https://i.pinimg.com/736x/06/64/44/0664445b1ce9160d66f048c2d0dd86b3.jpg",
+                "https://i.pinimg.com/736x/56/e8/11/56e811d5a27041a7c6b4b345003e4ddb.jpg",
+                "https://i.pinimg.com/736x/32/c9/24/32c92492c3b3caa95504bd0a2b5130a1.jpg",
+                "https://i.pinimg.com/564x/f2/ea/b5/f2eab569a7d80636cbef7ffe6b2228ba.jpg",
+                "https://i.pinimg.com/564x/27/eb/61/27eb615802525e10dd2921cb2d8f2f59.jpg",
+                "https://i.pinimg.com/564x/18/e5/fe/18e5fe597ab94f491647b2f79d4b89ae.jpg",
+                "https://i.pinimg.com/564x/b8/41/74/b84174b229c4c3032351d9e7904ec1ef.jpg",
+                "https://i.pinimg.com/564x/08/63/e2/0863e226a6ac60180f498e3df9306878.jpg",
+                "https://i.pinimg.com/736x/ec/c8/0c/ecc80c623cfc9849e60fdaa9f5cc2e2a.jpg",
+                "https://i.pinimg.com/564x/ca/9a/07/ca9a07b5d2554c0a321f91dc434c20e4.jpg",
+            ];
+
+            const links = [
+                "https://in.pinterest.com/pin/625648573264723157/",
+                "https://in.pinterest.com/pin/625648573264723127/",
+                "https://in.pinterest.com/pin/625648573264723159/",
+                "https://in.pinterest.com/pin/625648573264723046/",
+                "https://in.pinterest.com/pin/625648573264723031/",
+                "https://in.pinterest.com/pin/625648573264723038/",
+                "https://in.pinterest.com/pin/625648573264723008/",
+                "https://in.pinterest.com/pin/625648573264723115/",
+                "https://in.pinterest.com/pin/9359111720343185/",
+                "https://in.pinterest.com/pin/11751649020444041/"
+            ];
+
+            const randomIndex = Math.floor(Math.random() * memes.length);
+
+            console.log("Selected image path: ", memes[randomIndex]); // Log the selected image path
+            document.getElementById("meme-img").src = memes[randomIndex];
+            document.getElementById("meme-link").href = links[randomIndex];
+        });
+    </script>
 </head>
 <body>
     <header id="header">
