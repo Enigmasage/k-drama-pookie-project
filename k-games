@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>K-Drama Tic-Tac-Toe</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="header">
+        <h1>Tic-Tac-Toe: K-Drama Edition</h1>
+        <p style="color:  #ff4081">ARE YOU READY POOKIES TO HAVE FUN &#128525!</p>
+    </div>
+
+    <div class="msg-container hide">
+        <p id="msg"></p>
+        <button id="new-btn">New Game</button>
+    </div>
+
+    <main>
+        <div class="container">
+            <div class="game">
+                <button class="box"></button>
+                <button class="box"></button>
+                <button class="box"></button>
+                <button class="box"></button>
+                <button class="box"></button>
+                <button class="box"></button>
+                <button class="box"></button>
+                <button class="box"></button>
+                <button class="box"></button>
+            </div>
+        </div>
+        <button id="reset-btn">Reset Game</button>
+    </main>
+
+    <!-- Embedded JavaScript -->
+    <script>
+        let boxes = document.querySelectorAll(".box");
+        let resetBtn = document.querySelector("#reset-btn");
+        let newGameBtn = document.querySelector("#new-btn");
+        let msgContainer = document.querySelector(".msg-container");
+        let msg = document.querySelector("#msg");
+
+        let turnO = true; // true for Player (O), false for Computer (X)
+        let count = 0; // To track Draw
+
+        // Array of image URLs for Player and Computer
+        const playerImgs = [
+            "https://i.pinimg.com/564x/c5/01/1d/c5011d35ab436c949223466f909c3912.jpg",
+            "https://i.pinimg.com/564x/2c/09/24/2c0924cdf17458a50257e204cfea3954.jpg",
+            "https://i.pinimg.com/564x/5d/4c/68/5d4c689a0623013ff8a882519d67d68b.jpg",
+            // add more images as needed...
+        ];
+
+        const computerImgs = [
+            "https://i.pinimg.com/564x/c5/01/1d/c5011d35ab436c949223466f909c3912.jpg",
+            "https://i.pinimg.com/564x/2c/09/24/2c0924cdf17458a50257e204cfea3954.jpg",
+            "https://i.pinimg.com/564x/5d/4c/68/5d4c689a0623013ff8a882519d67d68b.jpg",
+            // add more images as needed...
+        ];
+
+        // Randomly select one image for Player and one for Computer
+        let currentPlayerImg = "";
+        let currentComputerImg = "";
+
+        const getRandomImage = (imagesArray) => {
+            return imagesArray[Math.floor(Math.random() * imagesArray.length)];
+        };
+
+        const startNewGame = () => {
+            currentPlayerImg = getRandomImage(playerImgs);
+            currentComputerImg = getRandomImage(computerImgs);
+            resetGame();
+        };
+
+        const resetGame = () => {
+            turnO = true;
+            count = 0;
+            enableBoxes();
+            msgContainer.classList.add("hide");
+        };
+
+        const computerMove = () => {
+            let availableBoxes = [];
+            boxes.forEach((box, index) => {
+                if (box.innerHTML === "") {
+                    availableBoxes.push(index);
+                }
+            });
+
+            if (availableBoxes.length > 0) {
+                let randomIndex = availableBoxes[Math.floor(Math.random() * availableBoxes.length)];
+                boxes[randomIndex].innerHTML = `<img src="${currentComputerImg}" alt="Computer">`;
+                boxes[randomIndex].disabled = true;
+                count++;
+                if (checkWinner()) {
+                    showWinner("Computer");
+                } else if (count === 9) {
+                    gameDraw();
+                }
+            }
+        };
+
+        const checkWinner = () => {
+            const winningCombinations = [
+                [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
+                [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
+                [0, 4, 8], [2, 4, 6] // Diagonals
+            ];
+
+            for (let combo of winningCombinations) {
+                const [a, b, c] = combo;
+                if (boxes[a].innerHTML !== "" && boxes[a].innerHTML === boxes[b].innerHTML && boxes[a].innerHTML === boxes[c].innerHTML) {
+                    return true;
+                }
+            }
+            return false;
+        };
+
+        const showWinner = (winner) => {
+            msg.innerText = `${winner} Wins!`;
+            msgContainer.classList.remove("hide");
+            disableBoxes();
+        };
+
+        const gameDraw = () => {
+            msg.innerText = "It's a Draw!";
+            msgContainer.classList.remove("hide");
+            disableBoxes();
+        };
+
+        const enableBoxes = () => {
+            boxes.forEach((box) => {
+                box.disabled = false;
+                box.innerHTML = "";
+                box.addEventListener("click", playerMove, { once: true });
+            });
+        };
+
+        const disableBoxes = () => {
+            boxes.forEach((box) => {
+                box.disabled = true;
+            });
+        };
+
+        const playerMove = (e) => {
+            const box = e.target;
+            if (turnO && box.innerHTML === "") {
+                box.innerHTML = `<img src="${currentPlayerImg}" alt="Player">`;
+                box.disabled = true;
+                count++;
+                if (checkWinner()) {
+                    showWinner("Player");
+                } else if (count < 9) {
+                    turnO = false;
+                    computerMove();
+                    turnO = true;
+                } else {
+                    gameDraw();
+                }
+            }
+        };
+
+        resetBtn.addEventListener("click", startNewGame);
+        newGameBtn.addEventListener("click", startNewGame);
+
+        // Start the first game
+        startNewGame();
+    </script>
+</body>
+</html>
